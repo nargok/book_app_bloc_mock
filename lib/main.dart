@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 
+import 'bloc/book_bloc.dart';
 import 'models/book.dart';
 import 'resources/book_api_privider.dart';
+import 'bloc/book_bloc.dart';
 
 void main() => runApp(MyApp());
 
@@ -38,6 +40,7 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  String searchText = 'AWS';
 
   @override
   void initState() {
@@ -46,9 +49,29 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   @override
+  void dispose() {
+    bloc.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    // todo API test
-    return Container();
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Book Search App'),
+      ),
+      body: StreamBuilder(
+        stream: bloc.allBooks,
+        builder: (context, AsyncSnapshot<BookModel> snapshot) {
+          if (snapshot.hasData) {
+            return Container();
+          } else if (snapshot.hasError) {
+            return Text(snapshot.error.toString());
+          }
+          return Center(child: CircularProgressIndicator());
+        },
+      ),
+    );
   }
 
   void testApiAccess(String title) async {
