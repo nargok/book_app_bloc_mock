@@ -73,7 +73,11 @@ class _MyHomePageState extends State<MyHomePage> {
               } else if (snapshot.hasError) {
                 return Text(snapshot.error.toString());
               }
-              return Center(child: CircularProgressIndicator());
+              return Center(
+                  child: Text(
+                '本の情報を入力してください',
+                style: TextStyle(color: Colors.black38),
+              ));
             },
           ),
         ],
