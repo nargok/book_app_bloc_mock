@@ -19,14 +19,14 @@ class BookModel {
 
 class _Book {
   String _title;
-  String _author;
+//  String _author; // todo authorsがないitemへの対応
 
   _Book(result) {
     _title = result['title'];
-    _author = result['authors'][0];
+//    _author = result['authors'][0];
   }
 
   String get title => _title;
-  String get author => _author;
+//  String get author => _author;
 
 }

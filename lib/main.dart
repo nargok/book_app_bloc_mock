@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 
+import 'models/book.dart';
+import 'resources/book_api_privider.dart';
+
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
@@ -35,10 +38,22 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+
+  @override
+  void initState() {
+    testApiAccess('AWS');
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     // todo API test
-
     return Container();
+  }
+
+  void testApiAccess(String title) async {
+    BookApiProvider api = BookApiProvider();
+    BookModel result = await api.fetchBooks(title);
+    print(result.items);
   }
 }
