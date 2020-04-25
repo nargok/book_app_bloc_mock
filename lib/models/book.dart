@@ -15,6 +15,7 @@ class BookModel {
   }
 
   List<_Book> get items => _items;
+  int get length => _items.length;
 }
 
 class _Book {

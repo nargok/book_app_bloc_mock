@@ -64,13 +64,24 @@ class _MyHomePageState extends State<MyHomePage> {
         stream: bloc.allBooks,
         builder: (context, AsyncSnapshot<BookModel> snapshot) {
           if (snapshot.hasData) {
-            return Container();
+            return buildList(snapshot);
           } else if (snapshot.hasError) {
             return Text(snapshot.error.toString());
           }
           return Center(child: CircularProgressIndicator());
         },
       ),
+    );
+  }
+
+  Widget buildList(AsyncSnapshot<BookModel> snapshot) {
+    return ListView.builder(
+      itemCount: (snapshot.hasData) ? snapshot.data.length : 0,
+      itemBuilder: (context, index) {
+        return ListTile(
+          title: Text('${snapshot.data.title}'),
+        );
+      },
     );
   }
 
