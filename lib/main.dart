@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'bloc/book_bloc.dart';
 import 'models/book.dart';
 import 'resources/book_api_privider.dart';
-import 'bloc/book_bloc.dart';
+import 'ui/book_list.dart';
 
 void main() => runApp(MyApp());
 
@@ -14,15 +14,6 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // Try running your application with "flutter run". You'll see the
-        // application has a blue toolbar. Then, without quitting the app, try
-        // changing the primarySwatch below to Colors.green and then invoke
-        // "hot reload" (press "r" in the console where you ran "flutter run",
-        // or simply save your changes to "hot reload" in a Flutter IDE).
-        // Notice that the counter didn't reset back to zero; the application
-        // is not restarted.
         primarySwatch: Colors.blue,
       ),
       home: MyHomePage(title: 'Flutter Demo Home Page'),
@@ -41,10 +32,11 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   String searchText = 'AWS';
+  TextEditingController _controller = TextEditingController();
 
   @override
   void initState() {
-    testApiAccess('AWS');
+//    testApiAccess('AWS');
     super.initState();
   }
 
@@ -60,28 +52,32 @@ class _MyHomePageState extends State<MyHomePage> {
       appBar: AppBar(
         title: Text('Book Search App'),
       ),
-      body: StreamBuilder(
-        stream: bloc.allBooks,
-        builder: (context, AsyncSnapshot<BookModel> snapshot) {
-          if (snapshot.hasData) {
-            return buildList(snapshot);
-          } else if (snapshot.hasError) {
-            return Text(snapshot.error.toString());
-          }
-          return Center(child: CircularProgressIndicator());
-        },
+      body: Column(
+        children: <Widget>[
+          Container(
+            width: 230,
+            constraints: BoxConstraints(minWidth: 230.0, minHeight: 25.0),
+            child: TextField(
+              controller: _controller,
+              onChanged: (text) {
+                print('$text');
+                bloc.fetchAllBooks(text);
+              },
+            ),
+          ),
+          StreamBuilder(
+            stream: bloc.allBooks,
+            builder: (context, AsyncSnapshot<BookModel> snapshot) {
+              if (snapshot.hasData) {
+                return buildList(snapshot);
+              } else if (snapshot.hasError) {
+                return Text(snapshot.error.toString());
+              }
+              return Center(child: CircularProgressIndicator());
+            },
+          ),
+        ],
       ),
-    );
-  }
-
-  Widget buildList(AsyncSnapshot<BookModel> snapshot) {
-    return ListView.builder(
-      itemCount: (snapshot.hasData) ? snapshot.data.length : 0,
-      itemBuilder: (context, index) {
-        return ListTile(
-          title: Text('${snapshot.data.title}'),
-        );
-      },
     );
   }
 
