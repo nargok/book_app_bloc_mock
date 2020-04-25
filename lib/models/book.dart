@@ -1,4 +1,12 @@
-class Book {
+class BookModel {
+  String title;
+  String author;
+  List<_Book> list = [];
+
+  BookModel({});
+}
+
+class _Book {
   String title;
   String author;
 

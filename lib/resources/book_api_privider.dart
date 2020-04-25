@@ -7,14 +7,14 @@ class BookApiProvider {
   Client client = Client();
   final _baseUrl = "http://example.com";
   
-  Future<Book> fetchBooks(String searchText) async {
+  Future<BookModel> fetchBooks(String searchText) async {
     Response response;
     response = await client.get("$_baseUrl/?search=$searchText");
 
     if (response.statusCode == 200) {
-      return Book.fromJon(json.decode(response.body));
+      return BookModel.fromJson(json.decode(response.body));
     } else {
-      throw Exception('Falied to load api');
+      throw Exception('Failed to load api');
     }
   }
 }
